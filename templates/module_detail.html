@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ module.title }}</h2>
+<p>{{ module.description }}</p>
+<hr>
+
+{% if module.lessons %}
+  <ul class="list-group">
+    {% for lesson in module.lessons %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <strong>{{ lesson.title }}</strong>
+          <div class="small text-muted">
+            {{ lesson.content[:120] }}{% if lesson.content|length > 120 %}...{% endif %}
+          </div>
+        </div>
+        <div>
+          {% if lesson.id in lesson_progress %}
+            <span class="badge bg-success me-2">Completed</span>
+          {% endif %}
+          <form method="post" action="{{ url_for('complete_lesson', lesson_id=lesson.id) }}" class="d-inline">
+            <button class="btn btn-sm btn-outline-primary"
+              {% if lesson.id in lesson_progress %}disabled{% endif %}>
+              Mark Complete
+            </button>
+          </form>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No lessons in this module yet.</p>
+{% endif %}
+
+<a href="{{ url_for('dashboard') }}" class="btn btn-link mt-3">Back to Dashboard</a>
+{% endblock %}

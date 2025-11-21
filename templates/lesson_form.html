@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>
+  {% if lesson %}Edit Lesson{% else %}New Lesson for "{{ module.title }}"{% endif %}
+</h2>
+<form method="post">
+  <div class="mb-3">
+    <label class="form-label">Title</label>
+    <input name="title" type="text" class="form-control"
+           value="{{ lesson.title if lesson else '' }}" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Sort Order (number)</label>
+    <input name="sort_order" type="number" class="form-control"
+           value="{{ lesson.sort_order if lesson else 0 }}">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Content</label>
+    <textarea name="content" class="form-control" rows="8">{{ lesson.content if lesson else '' }}</textarea>
+  </div>
+  <button class="btn btn-success">Save</button>
+  <a href="{{ url_for('edit_module', module_id=(lesson.module.id if lesson else module.id)) }}" class="btn btn-link">
+    Cancel
+  </a>
+{% endblock %}

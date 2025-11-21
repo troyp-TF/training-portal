@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Admin Dashboard</h2>
+
+<div class="mb-4">
+  <a class="btn btn-primary btn-sm" href="{{ url_for('new_module') }}">+ New Module</a>
+</div>
+
+<h4>Training Modules</h4>
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Active</th>
+      <th>Lessons</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for m in modules %}
+      <tr>
+        <td>{{ m.title }}</td>
+        <td>{{ "Yes" if m.is_active else "No" }}</td>
+        <td>{{ m.lessons|length }}</td>
+        <td>
+          <a href="{{ url_for('edit_module', module_id=m.id) }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+          <form method="post" action="{{ url_for('delete_module', module_id=m.id) }}" class="d-inline"
+                onsubmit="return confirm('Delete this module?')">
+            <button class="btn btn-sm btn-outline-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h4 class="mt-5">Users</h4>
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Role</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for u in users %}
+      <tr>
+        <td>{{ u.name }}</td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.role }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<a href="{{ url_for('dashboard') }}" class="btn btn-link mt-3">Back to My View</a>
+{% endblock %}
